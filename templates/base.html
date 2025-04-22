@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}Soccer Passing Academy{% endblock %}</title>
+    <link
+      href="{{ url_for('static', filename='css/style.css') }}"
+      rel="stylesheet"
+    />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    {% block head %}{% endblock %}
+  </head>
+  <body>
+    <div class="nav-wrapper">
+      <div class="nav-container">
+        <div class="nav-brand">
+          <a href="{{ url_for('home') }}" class="brand-link">
+            <span class="brand-text">Soccer Passing Academy</span>
+          </a>
+        </div>
+        <div class="nav-toggle" id="navToggle">
+          <span class="toggle-icon"></span>
+        </div>
+        <div class="nav-menu" id="navMenu">
+          <div class="nav-items">
+            <div
+              class="nav-item {% if request.path == url_for('home') %}active{% endif %}"
+            >
+              <a href="{{ url_for('home') }}" class="nav-link">Home</a>
+            </div>
+            <div
+              class="nav-item {% if '/lesson/' in request.path %}active{% endif %}"
+            >
+              <a href="{{ url_for('lesson', lesson_num=1) }}" class="nav-link"
+                >Lessons</a
+              >
+            </div>
+            <div
+              class="nav-item {% if '/quiz/' in request.path %}active{% endif %}"
+            >
+              Quiz
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="main-container">{% block content %}{% endblock %}</div>
+  </body>
+</html>

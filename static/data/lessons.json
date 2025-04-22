@@ -1,0 +1,321 @@
+[
+  {
+    "title": "Intro to Passing",
+    "content": [
+      {
+        "type": "text",
+        "value": "Passing in soccer is when a player kicks or sends the ball to a teammate to:"
+      },
+      {
+        "type": "list",
+        "value": [
+          "move the ball up the field",
+          "maintain possession",
+          "or create scoring opportunities"
+        ]
+      },
+      {
+        "type": "subheading",
+        "value": "Why it matters:"
+      },
+      {
+        "type": "list",
+        "value": [
+          "Good passing breaks down defenses and keeps the ball away from the opposing team.",
+          "Control the pace of the game and builds momentum."
+        ]
+      }
+    ],
+    "image": "/static/images/passing_intro.gif",
+    "questions": [
+      {
+        "question": "Passing in soccer is primarily used to score goals directly.",
+        "answer": false
+      },
+      {
+        "question": "Good passing helps maintain possession of the ball.",
+        "answer": true
+      },
+      {
+        "question": "Passing can be used to control the pace of the game.",
+        "answer": true
+      }
+    ]
+  },
+  {
+    "title": "Four Types of Passes",
+    "content": [
+      {
+        "type": "text",
+        "value": "We will focus on these four important types of passes in soccer:"
+      },
+      {
+        "type": "grid",
+        "value": [
+          {
+            "title": "Short Pass",
+            "image": "/static/images/short_pass.gif",
+            "description": "A basic pass over a short distance, usually along the ground."
+          },
+          {
+            "title": "Through Ball",
+            "image": "/static/images/through_ball.gif",
+            "description": "A pass played into space ahead of a teammate for them to run onto."
+          },
+          {
+            "title": "Lob Pass",
+            "image": "/static/images/lob_pass.jpg",
+            "description": "An aerial pass that goes over defenders' heads."
+          },
+          {
+            "title": "One-touch Pass",
+            "image": "/static/images/one_touch_pass.jpg",
+            "description": "Passing the ball immediately upon receiving it, without controlling it first."
+          }
+        ]
+      }
+    ],
+    "image": "/static/images/types_of_passing.png",
+    "questions": [
+      {
+        "question": "A through ball is played directly to a teammate's feet.",
+        "answer": false
+      },
+      {
+        "question": "A lob pass is played along the ground.",
+        "answer": false
+      },
+      {
+        "question": "A one-touch pass means passing immediately without controlling the ball first.",
+        "answer": true
+      }
+    ]
+  },
+  {
+    "title": "When to Pass vs Dribble",
+    "content": [
+      {
+        "type": "text",
+        "value": "Factors to consider: teammate positioning, pressure from defenders, distance to goal/from own goal."
+      },
+      {
+        "type": "numbered_list",
+        "value": [
+          {
+            "title": "Consider how much pressure you are getting from nearest defender",
+            "points": [
+              "Here there isn't a lot of space to work with so passing is the best option",
+              "In general you want to take the open space by dribbling when possible"
+            ]
+          }
+        ]
+      }
+    ],
+    "image": "/static/images/pass_vs_dribble.jpg",
+    "questions": [
+      {
+        "question": "You should always pass rather than dribble when under pressure.",
+        "answer": false
+      },
+      {
+        "question": "Teammate positioning is a factor to consider when deciding whether to pass or dribble.",
+        "answer": true
+      },
+      {
+        "question": "You should generally take open space by dribbling when possible.",
+        "answer": true
+      }
+    ]
+  },
+  {
+    "title": "Reading the Field",
+    "content": [
+      {
+        "type": "text",
+        "value": "Survey passing options considering their distance to goal, their leverage, their closest defender, and the difficulty of the pass."
+      },
+      {
+        "type": "numbered_list",
+        "value": [
+          {
+            "title": "Low Risk",
+            "points": [
+              "Pass is very open",
+              "Not in the best position to score",
+              "No defenders immediately near him",
+              "Leverage is standing still"
+            ]
+          },
+          {
+            "title": "High Risk",
+            "points": [
+              "4 defenders nearby",
+              "Running towards goal",
+              "Pass is difficult as it needs to go in between 2 defenders"
+            ]
+          },
+          {
+            "title": "Medium to High Risk",
+            "points": [
+              "Making unobstructed run towards goal",
+              "Open, nearest defender is considerably trailing",
+              "Pass is a bit difficult"
+            ]
+          }
+        ]
+      }
+    ],
+    "image": "/static/images/reading_field.jpg",
+    "questions": [
+      {
+        "question": "When surveying passing options, you should ignore the distance to goal.",
+        "answer": false
+      },
+      {
+        "question": "A pass to a player with no defenders nearby is generally a low-risk option.",
+        "answer": true
+      },
+      {
+        "question": "Difficulty of the pass is not a factor when reading the field.",
+        "answer": false
+      }
+    ]
+  },
+  {
+    "title": "When Not to Pass",
+    "content": [
+      {
+        "type": "text",
+        "value": "Sometimes dribbling is better, especially if no clear passing lane exists or you're 1v1 near the goal."
+      },
+      {
+        "type": "subheading",
+        "value": "Note Here:"
+      },
+      {
+        "type": "numbered_list",
+        "value": [
+          {
+            "title": "Distance to nearest defender (in red)",
+            "points": []
+          },
+          {
+            "title": "Open space ahead (in blue)",
+            "points": []
+          },
+          {
+            "title": "Openness of teammates (green)",
+            "points": []
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "value": "By dribbling and taking the open space you will draw the defenders opening up a better passing lane."
+      }
+    ],
+    "image": "/static/images/when_not_to_pass.jpg",
+    "questions": [
+      {
+        "question": "Dribbling is better when no clear passing lane exists.",
+        "answer": true
+      },
+      {
+        "question": "You should always pass when near the goal.",
+        "answer": false
+      },
+      {
+        "question": "Taking open space by dribbling can create better passing lanes.",
+        "answer": true
+      }
+    ]
+  },
+  {
+    "title": "Triangle Passing",
+    "content": [
+      {
+        "type": "list",
+        "value": [
+          "Triangle passing involves three players forming a triangle shape and continuously moving the ball between them.",
+          "This method helps maintain possession by always providing two passing options, making it harder for defenders to intercept.",
+          "It also forces defenders to shift positions, which can create openings and space for attacking opportunities."
+        ]
+      }
+    ],
+    "image": "/static/images/triangle_passing.jpg",
+    "questions": [
+      {
+        "question": "Triangle passing involves only two players.",
+        "answer": false
+      },
+      {
+        "question": "Triangle passing provides multiple passing options to maintain possession.",
+        "answer": true
+      },
+      {
+        "question": "Triangle passing forces defenders to shift positions.",
+        "answer": true
+      }
+    ]
+  },
+  {
+    "title": "Give and Go",
+    "content": [
+      {
+        "type": "list",
+        "value": [
+          "What it is: A quick exchange between two players where the first player passes and immediately runs into space to receive a return pass.",
+          "Why it's useful: Great for breaking through a tightly packed defense."
+        ]
+      }
+    ],
+    "image": "/static/images/give_and_go.jpg",
+    "questions": [
+      {
+        "question": "In a 'give and go', the first player passes and then stays in the same position.",
+        "answer": false
+      },
+      {
+        "question": "The 'give and go' is useful for breaking through tight defenses.",
+        "answer": true
+      },
+      {
+        "question": "The 'give and go' involves a quick exchange between two players.",
+        "answer": true
+      }
+    ]
+  },
+  {
+    "title": "Field Switch / Switch of Play",
+    "content": [
+      {
+        "type": "text",
+        "value": "Switching play involves transferring the ball from one side of the field to the other, typically with a long pass."
+      },
+      {
+        "type": "list",
+        "value": [
+          "Helps to exploit space on the opposite side of the field",
+          "Forces the defense to shift quickly, potentially creating gaps",
+          "Useful when one side becomes congested with defenders",
+          "Can change the tempo of the game"
+        ]
+      }
+    ],
+    "image": "/static/images/switch_play.jpg",
+    "questions": [
+      {
+        "question": "Switching play means dribbling across the field.",
+        "answer": false
+      },
+      {
+        "question": "Switching play helps exploit space on the opposite side of the field.",
+        "answer": true
+      },
+      {
+        "question": "Switching play is only useful when the defense is spread out.",
+        "answer": false
+      }
+    ]
+  }
+]

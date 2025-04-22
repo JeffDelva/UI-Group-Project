@@ -1,0 +1,145 @@
+{% extends "base.html" %} {% block title %}{{ lesson.title }} - Soccer Passing
+Academy{% endblock %} {% block head %}
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+{% endblock %} {% block content %}
+<div class="lesson-page">
+  <div class="progress-container">
+    <div class="progress-bar" style="width: {{ progress }}%;">
+      {{ lesson_num }} / {{ total_lessons }}
+    </div>
+  </div>
+
+  <div class="lesson-container">
+    <div class="lesson-header">
+      <div class="lesson-title">{{ lesson.title }}</div>
+    </div>
+    <div class="lesson-body">
+      <div class="lesson-content">
+        <div class="lesson-text">
+          {% for section in lesson.content %} {% if section.type == 'text' %}
+          <div class="content-text">{{ section.value }}</div>
+
+          {% elif section.type == 'subheading' %}
+          <div class="content-subheading">{{ section.value }}</div>
+
+          {% elif section.type == 'list' %}
+          <div class="content-list">
+            {% for item in section.value %}
+            <div class="list-item">
+              <span class="list-marker">•</span>
+              <span class="list-text">{{ item }}</span>
+            </div>
+            {% endfor %}
+          </div>
+
+          {% elif section.type == 'numbered_list' %}
+          <div class="content-section">
+            {% for item in section.value %}
+            <div class="section-title">{{ item.title }}</div>
+            <div class="section-points">
+              {% for point in item.points %}
+              <div class="point-item">
+                <span class="point-marker">-</span>
+                <span class="point-text">{{ point }}</span>
+              </div>
+              {% endfor %}
+            </div>
+            {% endfor %}
+          </div>
+
+          {% elif section.type == 'grid' %}
+          <div class="content-grid">
+            {% for gridItem in section.value %}
+            <div class="grid-item">
+              <div class="grid-content">
+                {% if gridItem.title is defined %}
+                <div class="grid-title">{{ gridItem.title }}</div>
+                {% endif %} {% if gridItem.image is defined %}
+                <div class="grid-image">
+                  <img
+                    src="{{ gridItem.image }}"
+                    alt="{{ gridItem.title|default('Image') }}"
+                  />
+                </div>
+                {% endif %} {% if gridItem.description is defined %}
+                <div class="grid-description">{{ gridItem.description }}</div>
+                {% endif %}
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+          {% endif %} {% endfor %}
+        </div>
+        {% if lesson.image is defined %}
+        <div class="lesson-image">
+          <img src="{{ lesson.image }}" alt="{{ lesson.title }}" />
+        </div>
+        {% endif %}
+      </div>
+
+      <div
+        class="check-learning-btn"
+        id="checkLearningBtn"
+        data-lesson-num="{{ lesson_num }}"
+      >
+        Check Learning
+      </div>
+
+      <div class="question-container" id="questionContainer">
+        <div class="question-text" id="questionText"></div>
+        <div class="answers-container">
+          <div class="answer-btn" data-value="true">True</div>
+          <div class="answer-btn" data-value="false">False</div>
+        </div>
+      </div>
+
+      <!-- Result Container (initially hidden) -->
+      <div class="result-container" id="resultContainer">
+        <div id="resultText"></div>
+        <div id="correctAnswer"></div>
+      </div>
+    </div>
+
+    <div class="lesson-footer">
+      {% if lesson_num > 1 %}
+      <div class="nav-previous">
+        <a
+          href="{{ url_for('lesson', lesson_num=lesson_num-1) }}"
+          class="action-button secondary-button"
+        >
+          <span class="nav-icon nav-prev"></span>
+          <span class="nav-text">Previous Lesson</span>
+        </a>
+      </div>
+      {% else %}
+      <div class="nav-placeholder"></div>
+      {% endif %} {% if lesson_num < total_lessons %}
+      <div class="nav-next">
+        <a
+          href="{{ url_for('lesson', lesson_num=lesson_num+1) }}"
+          class="action-button primary-button"
+        >
+          <span class="nav-text">Next Lesson</span>
+          <span class="nav-icon nav-next"></span>
+        </a>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+
+  {% if lesson_num == 1 %}
+  <div class="alert-container alert-info">
+    <div class="alert-content">
+      <span class="alert-icon info-icon"></span>
+      <div class="alert-text">
+        <span class="alert-heading">Getting Started:</span>
+        <span class="alert-message"
+          >Navigate through the lessons using the Previous and Next buttons.
+          After completing all lessons, test your knowledge with the quiz!</span
+        >
+      </div>
+    </div>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}
