@@ -1,5 +1,24 @@
 {% extends "base.html" %} {% block title %}Soccer Passing Academy - Home{%
-endblock %} {% block content %}
+endblock %} {% block head %}
+<script>
+  $(document).ready(function () {
+    // Fetch current lesson status when the page loads
+    $.ajax({
+      url: "/current_lesson",
+      method: "GET",
+      success: function (data) {
+        // If user has started lessons (current_lesson > 1), change button text
+        if (data.current_lesson > 1) {
+          $(".learn-card .action-button").text("Continue Lesson");
+        }
+      },
+      error: function (xhr, status, error) {
+        console.error("Error fetching lesson status:", error);
+      },
+    });
+  });
+</script>
+{% endblock %} {% block content %}
 <div class="hero-section">
   <div class="hero-content">
     <div class="hero-text">

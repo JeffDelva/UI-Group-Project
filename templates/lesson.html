@@ -1,11 +1,19 @@
 {% extends "base.html" %} {% block title %}{{ lesson.title }} - Soccer Passing
 Academy{% endblock %} {% block head %}
+<script>
+  // Pass feedback data to JavaScript
+  window.feedbackData = {{ feedback_data|tojson }};
+</script>
 <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 {% endblock %} {% block content %}
 <div class="lesson-page">
   <div class="progress-container">
     <div class="progress-bar" style="width: {{ progress }}%;">
       {{ lesson_num }} / {{ total_lessons }}
+    </div>
+    <!-- Add score display -->
+    <div class="score-display" id="scoreDisplay">
+      Correct Answers: {{ correct_answers }}
     </div>
   </div>
 
@@ -87,7 +95,7 @@ Academy{% endblock %} {% block head %}
 
       <div class="question-container" id="questionContainer">
         <div class="question-text" id="questionText"></div>
-        <div class="answers-container">
+        <div class="answers-container" id="answerButtons">
           <div class="answer-btn" data-value="true">True</div>
           <div class="answer-btn" data-value="false">False</div>
         </div>
@@ -142,4 +150,5 @@ Academy{% endblock %} {% block head %}
   </div>
   {% endif %}
 </div>
+
 {% endblock %}

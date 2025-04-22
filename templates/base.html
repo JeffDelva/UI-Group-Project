@@ -32,9 +32,7 @@
             <div
               class="nav-item {% if '/lesson/' in request.path %}active{% endif %}"
             >
-              <a href="{{ url_for('lesson', lesson_num=1) }}" class="nav-link"
-                >Lessons</a
-              >
+              <a href="{{ url_for('start') }}" class="nav-link">Lessons</a>
             </div>
             <div
               class="nav-item {% if '/quiz/' in request.path %}active{% endif %}"

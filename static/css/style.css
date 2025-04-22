@@ -527,6 +527,70 @@ img {
   margin: 0 5px;
 }
 
+.score-display {
+  float: right;
+  padding: 5px 10px;
+  background-color: #f0f8ff;
+  border-radius: 5px;
+  margin-right: 10px;
+  font-weight: bold;
+}
+
+.answer-btn.selected {
+  border: 2px solid #2c3e50;
+  font-weight: bold;
+}
+
+.answer-btn.correct {
+  background-color: #27ae60;
+  color: white;
+  border: 2px solid #27ae60;
+}
+
+.answer-btn.incorrect {
+  background-color: #e74c3c;
+  color: white;
+  border: 2px solid #e74c3c;
+}
+
+.answer-btn.answered:not(.selected) {
+  opacity: 0.7;
+  cursor: default;
+}
+
+.question-answered {
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #f8f9fa;
+  border-left: 4px solid #3498db;
+}
+
+.question-text {
+  font-weight: bold;
+}
+
+.result-correct {
+  color: #27ae60;
+  font-weight: bold;
+}
+
+.result-incorrect {
+  color: #e74c3c;
+  font-weight: bold;
+}
+
+.user-selection {
+  color: #7f8c8d;
+  font-style: italic;
+  margin-left: 5px;
+}
+
+.correct-answer {
+  color: #27ae60;
+  margin-left: 5px;
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;
