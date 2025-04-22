@@ -1,0 +1,185 @@
+[
+  {
+    "title": "Soccer Passing Quiz",
+    "description": "Test your knowledge of soccer passing fundamentals.",
+    "questions": [
+      {
+        "id": 1,
+        "question": "What would you do here?",
+        "image": "/static/images/quiz_scenario1.jpg",
+        "options": [
+          {
+            "id": "1",
+            "text": "Pass to player 1",
+            "isCorrect": true
+          },
+          {
+            "id": "2",
+            "text": "Pass to player 2",
+            "isCorrect": true
+          },
+          {
+            "id": "3",
+            "text": "Pass to player 3",
+            "isCorrect": false
+          },
+          {
+            "id": "4",
+            "text": "Pass to player 4",
+            "isCorrect": false
+          },
+          {
+            "id": "5",
+            "text": "Pass to player 5",
+            "isCorrect": false
+          },
+          {
+            "id": "6",
+            "text": "Pass to player 6",
+            "isCorrect": false
+          },
+          {
+            "id": "0",
+            "text": "Dribble forward",
+            "isCorrect": false
+          }
+        ],
+        "explanation": "Player 1 is the best option followed by player 2 being acceptable. Player 1 has the most open space and the best angle for attack."
+      },
+      {
+        "id": 2,
+        "question": "Which pass is the right pass here?",
+        "image": "/static/images/quiz_scenario2.jpg",
+        "options": [
+          {
+            "id": "0",
+            "text": "Dribble",
+            "isCorrect": false
+          },
+          {
+            "id": "1",
+            "text": "Pass to player 1",
+            "isCorrect": true
+          },
+          {
+            "id": "2",
+            "text": "Pass to player 2",
+            "isCorrect": false
+          },
+          {
+            "id": "3",
+            "text": "Pass to player 3",
+            "isCorrect": false
+          },
+          {
+            "id": "4",
+            "text": "Pass to player 4",
+            "isCorrect": true
+          }
+        ],
+        "explanation": "Player 1 or player 4 are the best passing options in this scenario."
+      },
+      {
+        "id": 3,
+        "question": "What's the best option and what type of pass is best?",
+        "image": "/static/images/quiz_scenario3.jpg",
+        "options": [
+          {
+            "id": "1",
+            "text": "Player 1 with a short pass",
+            "isCorrect": true
+          },
+          {
+            "id": "2",
+            "text": "Player 2 with a lob pass",
+            "isCorrect": false
+          },
+          {
+            "id": "3",
+            "text": "Player 3 with a through ball",
+            "isCorrect": false
+          },
+          {
+            "id": "4",
+            "text": "Player 4 with a one-touch pass",
+            "isCorrect": false
+          }
+        ],
+        "explanation": "Player 1 is the best option, and a short pass is the most appropriate type of pass for this situation."
+      },
+      {
+        "id": 4,
+        "question": "What type of pass is best here?",
+        "image": "/static/images/quiz_scenario4.jpg",
+        "options": [
+          {
+            "id": "a",
+            "text": "Through ball",
+            "isCorrect": true
+          },
+          {
+            "id": "b",
+            "text": "Short pass",
+            "isCorrect": false
+          },
+          {
+            "id": "c",
+            "text": "Lob pass",
+            "isCorrect": false
+          }
+        ],
+        "explanation": "A through ball is the most effective pass in this situation, as it allows you to pass into space ahead of your teammate for them to run onto."
+      },
+      {
+        "id": 5,
+        "question": "What type of passing did we just see?",
+        "image": "/static/images/quiz_scenario5.gif",
+        "options": [
+          {
+            "id": "1",
+            "text": "Triangle passing",
+            "isCorrect": true
+          },
+          {
+            "id": "2",
+            "text": "Give and go",
+            "isCorrect": true
+          },
+          {
+            "id": "3",
+            "text": "Field switch",
+            "isCorrect": false
+          },
+          {
+            "id": "4",
+            "text": "Crosser",
+            "isCorrect": false
+          }
+        ],
+        "explanation": "This is an example of triangle passing, though there was also a bit of give and go action."
+      }
+    ],
+    "results": {
+      "ranges": [
+        {
+
+          "_comment": "Whoever is doing the quiz.html remember to make a counter variable to keep track of the score. Also may need to edit the app.py also to make it work. The just delete this placeholder stuff and output the counter var here.",
+
+          "min": 0,
+          "max": 40,
+          "message": "You need more practice! Review the learning materials again."
+        },
+        {
+          "min": 41,
+          "max": 70,
+          "message": "Good effort! You're making progress in understanding soccer passing."
+        },
+        {
+          "min": 71,
+          "max": 100,
+          "message": "Excellent work! You've mastered the fundamentals of soccer passing."
+        }
+      ]
+    }
+  }
+]

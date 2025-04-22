@@ -64,12 +64,12 @@
           },
           {
             "title": "Lob Pass",
-            "image": "/static/images/lob_pass.jpg",
+            "image": "/static/images/lob_pass.gif",
             "description": "An aerial pass that goes over defenders' heads."
           },
           {
             "title": "One-touch Pass",
-            "image": "/static/images/one_touch_pass.jpg",
+            "image": "/static/images/one_touch_pass.gif",
             "description": "Passing the ball immediately upon receiving it, without controlling it first."
           }
         ]
@@ -242,7 +242,7 @@
         ]
       }
     ],
-    "image": "/static/images/triangle_passing.jpg",
+    "image": "/static/images/triangle_passing.gif",
     "questions": [
       {
         "question": "Triangle passing involves only two players.",
@@ -269,7 +269,7 @@
         ]
       }
     ],
-    "image": "/static/images/give_and_go.jpg",
+    "image": "/static/images/give_and_go.gif",
     "questions": [
       {
         "question": "In a 'give and go', the first player passes and then stays in the same position.",
@@ -302,7 +302,7 @@
         ]
       }
     ],
-    "image": "/static/images/switch_play.jpg",
+    "image": "/static/images/switch_play.gif",
     "questions": [
       {
         "question": "Switching play means dribbling across the field.",
