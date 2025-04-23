@@ -1,0 +1,166 @@
+{% extends "base.html" %}
+{% block title %}Quiz: Soccer Passing Knowledge{% endblock %}
+
+{% block content %}
+<div class="quiz-container">
+  <h1 id="quizTitle"></h1>
+  <p id="quizDesc"></p>
+
+  <div id="questionShell" class="question-container" style="display:none;">
+    <img id="questionImage" style="max-width:100%; max-height:300px; border-radius:8px; margin:0 auto 25px; display:block; box-shadow:0 4px 8px rgba(0,0,0,0.1); display:none;">
+    <p id="questionText" class="question-text"></p>
+    <div id="answersContainer" class="answers-container" style="display:flex; flex-wrap:wrap; justify-content:center; gap:15px; margin-top:25px;"></div>
+    <button id="submitAnswer" class="action-button primary-button" style="margin-top: 20px; padding: 12px 24px; font-weight: 600; width: auto; display: inline-block;" disabled>Submit Answer</button>
+  </div>
+
+  <div id="feedbackShell" class="result-container" style="display:none; margin-top:20px;">
+    <p id="feedbackText" class="result-text"></p>
+    <p id="explanationText" class="explanation-text"></p>
+    <button id="nextBtn" class="action-button primary-button" style="margin-top: 20px; padding: 12px 24px; font-weight: 600; width: auto; display: inline-block;">Next Question</button>
+    </div>
+
+  <div id="finalShell" class="result-container" style="display:none; margin-top:20px;">
+    <p id="finalText" class="result-text"></p>
+    <a href="{{ url_for('quiz_page') }}" class="primary-button">Try Again</a>
+    <a href="{{ url_for('home') }}" class="secondary-button" style="margin-top:10px;">Return Home</a>
+  </div>
+  
+  <!-- Progress indicator -->
+  <div id="progressIndicator" class="progress-container" style="margin-top:20px; display:none;">
+    <div id="progressBar" class="progress-bar" style="width:0%">0%</div>
+  </div>
+  
+</div>
+{% endblock %}
+
+{% block head %}
+<script>
+document.addEventListener("DOMContentLoaded", async () => {
+  // 1) fetch quiz JSON
+  const resp = await fetch("/api/quiz_data");
+  const quiz = await resp.json();
+
+  document.getElementById("quizTitle").textContent = quiz.title;
+  document.getElementById("quizDesc").textContent = quiz.description;
+
+  let idx = 0, score = 0, selected = null;
+  const questions = quiz.questions;
+  const totalQuestions = questions.length;
+  
+  // Show progress indicator
+  const progressIndicator = document.getElementById("progressIndicator");
+  const progressBar = document.getElementById("progressBar");
+  progressIndicator.style.display = "block";
+  updateProgress(0);
+
+  const qShell  = document.getElementById("questionShell");
+  const fShell  = document.getElementById("feedbackShell");
+  const finalS  = document.getElementById("finalShell");
+  const qImg    = document.getElementById("questionImage");
+  const qText   = document.getElementById("questionText");
+  const aCont   = document.getElementById("answersContainer");
+  const subBtn  = document.getElementById("submitAnswer");
+  const fbText  = document.getElementById("feedbackText");
+  const expText = document.getElementById("explanationText");
+  const nextBtn = document.getElementById("nextBtn");
+  const finalT  = document.getElementById("finalText");
+
+  function updateProgress(currentIdx) {
+    const progressPct = Math.round((currentIdx / totalQuestions) * 100);
+    progressBar.style.width = `${progressPct}%`;
+    progressBar.textContent = `${progressPct}%`;
+  }
+
+  function showQuestion(i) {
+    const q = questions[i];
+    updateProgress(i);
+
+    // image?
+    if (q.image) {
+      qImg.src = q.image;
+      qImg.style.display = "block";
+    } else {
+      qImg.style.display = "none";
+    }
+    qText.textContent = q.question;
+    aCont.innerHTML = ""; selected = null; subBtn.disabled = true;
+
+    q.options.forEach(o => {
+      let btn = document.createElement("button");
+      btn.className = "answer-btn";
+      btn.textContent = o.text;
+      btn.onclick = () => {
+        selected = o;
+        subBtn.disabled = false;
+        Array.from(aCont.children).forEach(b => b.classList.remove("selected"));
+        btn.classList.add("selected");
+      };
+      aCont.appendChild(btn);
+    });
+
+    qShell.style.display = "block";
+    fShell.style.display = "none";
+    finalS.style.display = "none";
+  }
+
+  subBtn.onclick = async () => {
+    if (!selected) return;
+    
+    // Record timestamp of answer
+    const timestamp = new Date().toISOString();
+    
+    // record on server
+    const res = await fetch("/api/quiz_answer", {
+      method: "POST",
+      headers: {"Content-Type":"application/json"},
+      body: JSON.stringify({
+        question_id: questions[idx].id,
+        selected_id: selected.id,
+        timestamp: timestamp
+      })
+    });
+    const data = await res.json();
+    if (!data.error) {
+      if (data.correct) score++;
+      // show feedback
+      fbText.textContent = data.feedback;
+      expText.textContent = data.explanation || "";
+      qShell.style.display = "none";
+      fShell.style.display = "block";
+      
+      // Highlight the correct answer if user was wrong
+      if (!data.correct) {
+        fbText.className = "result-text incorrect";
+      } else {
+        fbText.className = "result-text correct";
+      }
+    }
+  };
+
+  nextBtn.onclick = () => {
+    idx++;
+    if (idx < questions.length) {
+      showQuestion(idx);
+    } else {
+      finish();
+    }
+  };
+
+  async function finish() {
+    // compute final on server
+    const r = await fetch("/api/quiz_results");
+    const { score_pct, message } = await r.json();
+    
+    // Update progress to 100%
+    updateProgress(totalQuestions);
+    
+    finalT.textContent = `You scored ${score_pct}% — ${message}`;
+    fShell.style.display = "none";
+    finalS.style.display = "block";
+  }
+
+  // kick it off:
+  showQuestion(0);
+});
+</script>
+{% endblock %}

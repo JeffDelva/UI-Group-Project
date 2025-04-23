@@ -96,7 +96,9 @@ endblock %} {% block head %}
           Test your knowledge with our comprehensive quiz and become a passing
           expert.
         </div>
-        <div class="card-action">Skip to Quiz ></div>
+        <div class="card-action"><a href="{{ url_for('quiz_page') }}" class="action-button secondary-button">Skip to Quiz</a>
+
+        </div>
       </div>
     </div>
   </div>

@@ -34,11 +34,9 @@
             >
               <a href="{{ url_for('start') }}" class="nav-link">Lessons</a>
             </div>
-            <div
-              class="nav-item {% if '/quiz/' in request.path %}active{% endif %}"
-            >
-              Quiz
-            </div>
+            <div class="nav-item {% if request.path == url_for('quiz_page') %}active{% endif %}">
+                        <a href="{{ url_for('quiz_page') }}" class="nav-link">Quiz</a>
+                      </div>
           </div>
         </div>
       </div>

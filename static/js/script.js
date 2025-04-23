@@ -7,6 +7,10 @@ $(document).ready(function () {
     const lessonNum = $(this).data("lesson-num");
     console.log("Loading question for lesson:", lessonNum);
 
+    // Track the user interaction with timestamp
+    const timestamp = new Date().toISOString();
+    console.log(`Question requested at: ${timestamp}`);
+
     $.ajax({
       url: `/get_question/${lessonNum}`,
       method: "GET",
@@ -21,6 +25,8 @@ $(document).ready(function () {
         $("#questionText").text(data.question);
         $("#questionContainer").show();
         $("#questionContainer").data("current-question", data.question);
+        // Store timestamp with the question
+        $("#questionContainer").data("question-timestamp", timestamp);
 
         // Reset button states
         $(".answer-btn").removeClass("selected correct incorrect");
@@ -87,9 +93,10 @@ $(document).ready(function () {
     const userAnswer = $(this).data("value");
     const lessonNum = $("#checkLearningBtn").data("lesson-num");
     const questionText = $("#questionContainer").data("current-question");
+    const timestamp = new Date().toISOString(); // Record answer timestamp
 
     console.log(
-      `User selected: ${userAnswer} (${typeof userAnswer}) for lesson ${lessonNum}`
+      `User selected: ${userAnswer} (${typeof userAnswer}) for lesson ${lessonNum} at ${timestamp}`
     );
 
     // Mark the selected button
@@ -106,6 +113,7 @@ $(document).ready(function () {
       data: JSON.stringify({
         question: questionText,
         user_answer: userAnswer,
+        timestamp: timestamp // Include timestamp in data sent to server
       }),
       success: function (data) {
         if (data.error) {
