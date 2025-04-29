@@ -1,29 +1,29 @@
 {% extends "base.html" %} {% block title %}{{ lesson.title }} - Soccer Passing
 Academy{% endblock %} {% block head %}
 <script>
-  // Pass feedback data to JavaScript
   window.feedbackData = {{ feedback_data|tojson }};
 </script>
 <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 {% endblock %} {% block content %}
-<div class="lesson-page">
-  <div class="progress-container">
-    <div class="progress-bar" style="width: {{ progress }}%;">
-      {{ lesson_num }} / {{ total_lessons }}
+<div class="page">
+  <div class="progress-wrapper">
+    <div class="progress-container">
+      <div class="progress-bar" style="width: {{ progress }}%;">
+        {{ lesson_num }} / {{ total_lessons }}
+      </div>
     </div>
-    <!-- Add score display -->
-    <div class="score-display" id="scoreDisplay">
-      Correct Answers: {{ correct_answers }}
-    </div>
+    <div class="start-over-btn" id="startOverBtn">Start Over</div>
+  </div>
+    
   </div>
 
-  <div class="lesson-container">
-    <div class="lesson-header">
-      <div class="lesson-title">{{ lesson.title }}</div>
+  <div class="content-container">
+    <div class="content-header">
+      <div class="content-title">{{ lesson.title }}</div>
     </div>
-    <div class="lesson-body">
-      <div class="lesson-content">
-        <div class="lesson-text">
+    <div class="content-body">
+      <div class="content-details">
+        <div class="content-info">
           {% for section in lesson.content %} {% if section.type == 'text' %}
           <div class="content-text">{{ section.value }}</div>
 
@@ -101,16 +101,15 @@ Academy{% endblock %} {% block head %}
         </div>
       </div>
 
-      <!-- Result Container (initially hidden) -->
       <div class="result-container" id="resultContainer">
         <div id="resultText"></div>
         <div id="correctAnswer"></div>
       </div>
     </div>
 
-    <div class="lesson-footer">
+    <div class="content-footer">
       {% if lesson_num > 1 %}
-      <div class="nav-previous">
+      <div>
         <a
           href="{{ url_for('lesson', lesson_num=lesson_num-1) }}"
           class="action-button secondary-button"
@@ -121,8 +120,18 @@ Academy{% endblock %} {% block head %}
       </div>
       {% else %}
       <div class="nav-placeholder"></div>
-      {% endif %} {% if lesson_num < total_lessons %}
-      <div class="nav-next">
+      {% endif %} {% if lesson_num == 8 %}
+      <div>
+        <a
+          href="{{ url_for('quiz_page') }}"
+          class="action-button primary-button"
+        >
+          <span class="nav-text">Take Quiz</span>
+          <span class="nav-icon nav-next"></span>
+        </a>
+      </div>
+      {% elif lesson_num < total_lessons %}
+      <div>
         <a
           href="{{ url_for('lesson', lesson_num=lesson_num+1) }}"
           class="action-button primary-button"

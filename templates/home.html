@@ -2,14 +2,12 @@
 endblock %} {% block head %}
 <script>
   $(document).ready(function () {
-    // Fetch current lesson status when the page loads
     $.ajax({
       url: "/current_lesson",
       method: "GET",
       success: function (data) {
-        // If user has started lessons (current_lesson > 1), change button text
         if (data.current_lesson > 1) {
-          $(".learn-card .action-button").text("Continue Lesson");
+          $(".card-action .action-button").text("Continue Lesson");
         }
       },
       error: function (xhr, status, error) {
@@ -22,11 +20,7 @@ endblock %} {% block head %}
 <div class="hero-section">
   <div class="hero-content">
     <div class="hero-text">
-      <div class="hero-title">Master the Art of Passing in Soccer</div>
-      <div class="hero-lead">
-        Welcome to Soccer Passing Academy, where you'll learn everything about
-        passing techniques that will transform your game.
-      </div>
+      <div class="hero-title">Welcome to Soccer Passing Academy</div>
       <div class="hero-details">Our comprehensive course covers:</div>
       <div class="features-list">
         <div class="feature-item">
@@ -47,6 +41,7 @@ endblock %} {% block head %}
         </div>
       </div>
     </div>
+
     <div class="hero-animation">
       <div class="animation-container">
         <img
@@ -57,50 +52,12 @@ endblock %} {% block head %}
       </div>
     </div>
   </div>
-</div>
 
-<div class="cards-section">
-  <div class="cards-container">
-    <div class="card-item learn-card">
-      <div class="card-content">
-        <div class="card-icon">
-          <img
-            src="{{ url_for('static', filename='images/icon-learn.png') }}"
-            alt="Learn"
-            class="icon-image"
-          />
-        </div>
-        <div class="card-title">Learn</div>
-        <div class="card-description">
-          Understand the principles and techniques of effective passing in
-          soccer.
-        </div>
-        <div class="card-action">
-          <a href="{{ url_for('start') }}" class="action-button primary-button"
-            >Start Learning</a
-          >
-        </div>
-      </div>
-    </div>
-    <div class="card-item practice-card">
-      <div class="card-content">
-        <div class="card-icon">
-          <img
-            src="{{ url_for('static', filename='images/icon-practice.png') }}"
-            alt="Practice"
-            class="icon-image"
-          />
-        </div>
-        <div class="card-title">Practice</div>
-        <div class="card-description">
-          Test your knowledge with our comprehensive quiz and become a passing
-          expert.
-        </div>
-        <div class="card-action"><a href="{{ url_for('quiz_page') }}" class="action-button secondary-button">Skip to Quiz</a>
-
-        </div>
-      </div>
-    </div>
+  <div class="card-action">
+    <a href="{{ url_for('start') }}" class="action-button primary-button"
+      >Start Learning</a
+    >
   </div>
 </div>
+
 {% endblock %}

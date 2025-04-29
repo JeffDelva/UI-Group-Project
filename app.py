@@ -11,7 +11,10 @@ with open("static/data/lessons.json", "r") as f:
 
 with open("static/data/quiz.json", "r") as f:
     all_quizzes = json.load(f)
-    QUIZ = all_quizzes[0]  # Using QUIZ as the variable name to match template references
+    QUIZ = all_quizzes[
+        0
+    ]  # Using QUIZ as the variable name to match template references
+
 
 @app.route("/")
 def home():
@@ -40,9 +43,9 @@ def lesson(lesson_num):
     # Track when user enters the page
     session["last_lesson_access"] = {
         "lesson": lesson_num,
-        "timestamp": str(datetime.datetime.now())
+        "timestamp": str(datetime.datetime.now()),
     }
-    
+
     session["current_lesson"] = lesson_num
 
     if "correct_answers" not in session:
@@ -254,6 +257,7 @@ def current_lesson():
     else:
         return jsonify({"current_lesson": 1, "correct_answers": 0})
 
+
 @app.route("/quiz")
 def quiz_page():
     # Track when user enters the quiz page
@@ -263,14 +267,18 @@ def quiz_page():
         session["quiz_answers"] = {}
     return render_template("quiz.html", QUIZ=QUIZ)
 
+
 # send the quiz JSON to the front end
 @app.route("/api/quiz_data")
 def quiz_data():
-    return jsonify({
-      "title": QUIZ["title"],
-      "description": QUIZ["description"],
-      "questions": QUIZ["questions"]
-    })
+    return jsonify(
+        {
+            "title": QUIZ["title"],
+            "description": QUIZ["description"],
+            "questions": QUIZ["questions"],
+        }
+    )
+
 
 # accept each answer and store in session
 @app.route("/api/quiz_answer", methods=["POST"])
@@ -294,12 +302,15 @@ def quiz_answer():
     is_correct = any(o["id"] == selected for o in correct_opts)
     correct_text = " / ".join(o["text"] for o in correct_opts)
 
-    return jsonify({
-      "correct": is_correct,
-      "feedback": "Correct!" if is_correct else "Incorrect!",
-      "correct_answer": correct_text,
-      "explanation": question.get("explanation","")
-    })
+    return jsonify(
+        {
+            "correct": is_correct,
+            "feedback": "Correct!" if is_correct else "Incorrect!",
+            "correct_answer": correct_text,
+            "explanation": question.get("explanation", ""),
+        }
+    )
+
 
 # compute final score + message
 @app.route("/api/quiz_results")
@@ -307,33 +318,63 @@ def quiz_results():
     answers = session.get("quiz_answers", {})
     correct = 0
     total = len(QUIZ["questions"])
-    
+
     for q in QUIZ["questions"]:
         sel = answers.get(str(q["id"]))
-        if sel and any(o["id"] == sel and o.get("isCorrect", False) for o in q["options"]):
+        if sel and any(
+            o["id"] == sel and o.get("isCorrect", False) for o in q["options"]
+        ):
             correct += 1
 
     pct = round(correct / total * 100)
-    
+
     # Store the quiz results in session
     session["quiz_results"] = {
         "score": correct,
         "total": total,
         "percentage": pct,
-        "timestamp": str(datetime.datetime.now())
+        "timestamp": str(datetime.datetime.now()),
     }
     session.modified = True
-    
+
     # pick the right message bucket
-    msg = next((r["message"] for r in QUIZ["results"]["ranges"] 
-               if r["min"] <= pct <= r["max"]), "No message found for your score.")
+    msg = next(
+        (
+            r["message"]
+            for r in QUIZ["results"]["ranges"]
+            if r["min"] <= pct <= r["max"]
+        ),
+        "No message found for your score.",
+    )
 
     return jsonify({"score_pct": pct, "message": msg})
 
-@app.route("/reset_progress")
+
+# Add this route to your Flask app
+
+
+@app.route("/reset_progress", methods=["POST"])
 def reset_progress():
-    reset_session()
-    return redirect(url_for("home"))
+    """Reset user progress and redirect to lesson 1."""
+    try:
+        # Reset session variables
+        session["correct_answers"] = 0
+
+        # Reset any answered questions
+        if "answers" in session:
+            session["answers"] = {}
+
+        # Reset any other progress-related variables
+        if "completed_lessons" in session:
+            session["completed_lessons"] = []
+
+        # You may need to reset other session variables based on your application
+
+        return jsonify({"success": True})
+    except Exception as e:
+        app.logger.error(f"Error resetting progress: {str(e)}")
+        return jsonify({"success": False, "error": str(e)}), 500
+
 
 def reset_session():
     """Helper function to reset the session data"""
@@ -349,6 +390,7 @@ def reset_session():
         session.pop("quiz_answers")
     if "quiz_results" in session:
         session.pop("quiz_results")
+
 
 # Add missing import
 import datetime
