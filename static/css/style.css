@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap");
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -7,7 +9,7 @@
 body {
   font-family: "Roboto", sans-serif;
   color: #3d3d3d;
-  background-color: #f8f9fa;
+  background-color: #eaffceb4;
   line-height: 1.6;
 }
 
@@ -154,6 +156,8 @@ img {
 }
 
 .hero-title {
+  font-family: "Bebas Neue", serif;
+  letter-spacing: 3px;
   font-size: 2.5rem;
   font-weight: 700;
   color: #0d6efd;
