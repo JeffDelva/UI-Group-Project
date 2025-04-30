@@ -35,7 +35,7 @@ img {
 }
 
 .nav-wrapper {
-  background-color: #adadad;
+  background-color: #e0e0e0; /* Changed to light grey */
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   position: sticky;
   top: 0;
@@ -56,7 +56,7 @@ img {
 .brand-link {
   display: flex;
   align-items: center;
-  color: black;
+  color: black; /* Keeping the brand text black */
 }
 
 .brand-text {
@@ -73,7 +73,7 @@ img {
 }
 
 .nav-link {
-  color: black;
+  color: #444444; /* Changed to dark grey */
   padding: 8px 12px;
   transition: color 0.3s ease;
 }
@@ -83,7 +83,7 @@ img {
 }
 
 .nav-item.active .nav-link {
-  color: black;
+  color: #222222; /* Darker grey for active state */
   font-weight: 500;
 }
 
@@ -102,7 +102,7 @@ img {
 .toggle-icon,
 .toggle-icon:before,
 .toggle-icon:after {
-  background-color: black;
+  background-color: #444444; /* Changed to dark grey */
   width: 100%;
   height: 2px;
   position: absolute;
@@ -680,7 +680,7 @@ img {
     top: 100%;
     left: 0;
     right: 0;
-    background-color: #212529;
+    background-color: #e0e0e0; /* Changed to light grey to match navbar */
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.3s ease;
