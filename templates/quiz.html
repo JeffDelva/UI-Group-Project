@@ -361,7 +361,10 @@
   
         updateProgressBar(quizData.questions.length, quizData.questions.length);
   
-        $("#finalText").text(`You scored ${scorePct}% — ${message}`);
+        // Updated format with more prominent score display
+        $("#finalText").html(`You scored <span style="font-size: 2rem; font-weight: bold; color: #dc3545; display: block; margin: 15px 0;">${scorePct}%</span> — ${message}`);
+
+  
         $("#questionShell").hide();
         $("#finalShell").show();
   
@@ -379,4 +382,4 @@
       }
     });
   </script>
-  {% endblock %}x
+  {% endblock %}
