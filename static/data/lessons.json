@@ -111,7 +111,10 @@
         ]
       }
     ],
-    "image": "/static/images/pass_vs_dribble.jpg",
+    "images": [
+      "/static/images/pass_vs_dribble.jpg",
+      "/static/images/lessons_1.jpg"
+    ],
     "questions": [
       {
         "question": "You should always pass rather than dribble when under pressure.",
@@ -138,7 +141,7 @@
         "type": "numbered_list",
         "value": [
           {
-            "title": "Low Risk",
+            "title": "1 - Low Risk",
             "points": [
               "Pass is very open",
               "Not in the best position to score",
@@ -147,7 +150,7 @@
             ]
           },
           {
-            "title": "High Risk",
+            "title": "2 - High Risk",
             "points": [
               "4 defenders nearby",
               "Running towards goal",
@@ -155,7 +158,7 @@
             ]
           },
           {
-            "title": "Medium to High Risk",
+            "title": "3 - Medium to High Risk",
             "points": [
               "Making unobstructed run towards goal",
               "Open, nearest defender is considerably trailing",
@@ -165,7 +168,10 @@
         ]
       }
     ],
-    "image": "/static/images/reading_field.gif",
+    "images": [
+      "/static/images/reading_field.gif",
+      "/static/images/lessons_1.jpg"
+    ],
     "questions": [
       {
         "question": "When surveying passing options, you should ignore the distance to goal.",
@@ -214,7 +220,10 @@
         "value": "By dribbling and taking the open space you will draw the defenders opening up a better passing lane."
       }
     ],
-    "image": "/static/images/when_not_to_pass.jpg",
+    "images": [
+      "/static/images/when_not_to_pass.jpg",
+      "/static/images/lessons_2.jpg"
+    ],
     "questions": [
       {
         "question": "Dribbling is better when no clear passing lane exists.",

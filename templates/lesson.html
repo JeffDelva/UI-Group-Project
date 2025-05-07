@@ -78,7 +78,15 @@ Academy{% endblock %} {% block head %}
           </div>
           {% endif %} {% endfor %}
         </div>
-        {% if lesson.image is defined %}
+        {% if lesson.images is defined %}
+        <div class="lesson-images">
+          {% for image_src in lesson.images %}
+          <div class="lesson-image">
+            <img src="{{ image_src }}" alt="{{ lesson.title }}" />
+          </div>
+          {% endfor %}
+        </div>
+        {% elif lesson.image is defined %}
         <div class="lesson-image">
           <img src="{{ lesson.image }}" alt="{{ lesson.title }}" />
         </div>
