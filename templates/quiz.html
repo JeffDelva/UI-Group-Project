@@ -95,291 +95,294 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script>
     $(document).ready(function () {
-      let quizData = null;
-      let currentQuestionIndex = 0;
-      let score = 0;
-      let selectedAnswer = null;
-      let previousAnswers = [];
-  
-      $.ajax({
-        url: "/api/quiz_data",
-        method: "GET",
-        success: function (data) {
-          quizData = data;
-  
-          $("#quizTitle").text(data.title);
-          $("#quizDesc").text(data.description);
-  
-          showQuestion(0);
-        },
-        error: function (xhr, status, error) {
-          console.error("Error loading quiz data:", error);
-          alert("Failed to load quiz. Please try again.");
-        },
+  let quizData = null;
+  let currentQuestionIndex = 0;
+  let score = 0;
+  let selectedAnswer = null;
+  let previousAnswers = [];
+
+  $.ajax({
+    url: "/api/quiz_data",
+    method: "GET",
+    success: function (data) {
+      quizData = data;
+
+      $("#quizTitle").text(data.title);
+      $("#quizDesc").text(data.description);
+
+      showQuestion(0);
+    },
+    error: function (xhr, status, error) {
+      console.error("Error loading quiz data:", error);
+      alert("Failed to load quiz. Please try again.");
+    },
+  });
+
+  $("#resetQuizBtn").click(function () {
+    if (
+      confirm(
+        "Are you sure you want to reset your quiz progress? This will clear all your answers."
+      )
+    ) {
+      currentQuestionIndex = 0;
+      score = 0;
+      previousAnswers = [];
+
+      $("#backButton").show();
+      $("#prevQuestionBtn").hide();
+
+      showQuestion(0);
+    }
+  });
+
+  function showQuestion(index) {
+    if (
+      !quizData ||
+      !quizData.questions ||
+      index >= quizData.questions.length
+    ) {
+      console.error("Invalid question index or missing quiz data");
+      return;
+    }
+
+    const question = quizData.questions[index];
+    currentQuestionIndex = index;
+
+    if (index > 0) {
+      $("#backButton").hide();
+      $("#prevQuestionBtn").show();
+    } else {
+      $("#backButton").show();
+      $("#prevQuestionBtn").hide();
+    }
+
+    updateProgressBar(index + 1, quizData.questions.length);
+
+    $("#questionText").text(question.question);
+
+    if (question.image) {
+      $("#questionImage").attr("src", question.image);
+      $("#questionImage").show();
+    } else {
+      $("#questionImage").hide();
+    }
+
+    $("#answersContainer").empty();
+    selectedAnswer = null;
+
+    question.options.forEach(function (option) {
+      const button = $("<div>")
+        .addClass("answer-btn")
+        .attr("data-id", option.id)
+        .text(option.text);
+
+      button.click(function () {
+        $(".answer-btn").removeClass("selected");
+        $(this).addClass("selected");
+        selectedAnswer = option;
+        $("#submitAnswer").prop("disabled", false);
       });
-  
-      $("#resetQuizBtn").click(function () {
-        if (
-          confirm(
-            "Are you sure you want to reset your quiz progress? This will clear all your answers."
-          )
-        ) {
-          currentQuestionIndex = 0;
-          score = 0;
-          previousAnswers = [];
-  
-          $("#backButton").show();
-          $("#prevQuestionBtn").hide();
-  
-          showQuestion(0);
-        }
-      });
-  
-      function showQuestion(index) {
-        if (
-          !quizData ||
-          !quizData.questions ||
-          index >= quizData.questions.length
-        ) {
-          console.error("Invalid question index or missing quiz data");
-          return;
-        }
-  
-        const question = quizData.questions[index];
-        currentQuestionIndex = index;
-  
-        if (index > 0) {
-          $("#backButton").hide();
-          $("#prevQuestionBtn").show();
+
+      $("#answersContainer").append(button);
+    });
+
+    $("#submitAnswer").prop("disabled", true).show();
+
+    $("#questionShell").show();
+    $("#feedbackShell").hide();
+    $("#finalShell").hide();
+    $("#nextQuestionBtn").hide();
+    $("#explanationText").empty(); // Clear previous explanation
+
+    if (previousAnswers[index]) {
+      const previousAnswer = previousAnswers[index];
+
+      const button = $(`.answer-btn[data-id="${previousAnswer.selectedId}"]`);
+      if (button.length) {
+        button.addClass("selected");
+
+        if (previousAnswer.correct) {
+          button.addClass("correct");
         } else {
-          $("#backButton").show();
-          $("#prevQuestionBtn").hide();
-        }
-  
-        updateProgressBar(index + 1, quizData.questions.length);
-  
-        $("#questionText").text(question.question);
-  
-        if (question.image) {
-          $("#questionImage").attr("src", question.image);
-          $("#questionImage").show();
-        } else {
-          $("#questionImage").hide();
-        }
-  
-        $("#answersContainer").empty();
-        selectedAnswer = null;
-  
-        question.options.forEach(function (option) {
-          const button = $("<div>")
-            .addClass("answer-btn")
-            .attr("data-id", option.id)
-            .text(option.text);
-  
-          button.click(function () {
-            $(".answer-btn").removeClass("selected");
-            $(this).addClass("selected");
-            selectedAnswer = option;
-            $("#submitAnswer").prop("disabled", false);
-          });
-  
-          $("#answersContainer").append(button);
-        });
-  
-        $("#submitAnswer").prop("disabled", true).show();
-  
-        $("#questionShell").show();
-        $("#feedbackShell").hide();
-        $("#finalShell").hide();
-        $("#nextQuestionBtn").hide();
-  
-        if (previousAnswers[index]) {
-          const previousAnswer = previousAnswers[index];
-  
-          const button = $(`.answer-btn[data-id="${previousAnswer.selectedId}"]`);
-          if (button.length) {
-            button.addClass("selected");
-  
-            if (previousAnswer.correct) {
-              button.addClass("correct");
-            } else {
-              button.addClass("incorrect");
-  
-              if (previousAnswer.correctId) {
-                $(`.answer-btn[data-id="${previousAnswer.correctId}"]`).addClass(
-                  "correct"
-                );
-              }
-            }
-  
-            $("#feedbackText").text(
-              previousAnswer.correct ? "Correct!" : "Incorrect."
+          button.addClass("incorrect");
+
+          if (previousAnswer.correctId) {
+            $(`.answer-btn[data-id="${previousAnswer.correctId}"]`).addClass(
+              "correct"
             );
-            $("#feedbackShell").removeClass("correct incorrect");
-            $("#feedbackShell").addClass(
-              previousAnswer.correct ? "correct" : "incorrect"
-            );
-  
-            if (!previousAnswer.correct && previousAnswer.explanation) {
-              $("#explanationText").text(previousAnswer.explanation);
-            }
-  
-            $("#feedbackShell").show();
-            $("#submitAnswer").hide();
-  
-            if (currentQuestionIndex < quizData.questions.length - 1) {
-              $("#nextQuestionBtn").show();
-            }
-  
-            $(".answer-btn").addClass("answered");
           }
         }
-      }
-  
-      function updateProgressBar(current, total) {
-        const percentage = Math.round((current / total) * 100);
-        $("#progressBar").css("width", percentage + "%");
-        $("#progressBar").text(current + " / " + total);
-      }
-  
-      $("#submitAnswer").click(function () {
-        if (!selectedAnswer) return;
-  
-        const questionId = quizData.questions[currentQuestionIndex].id;
-        const timestamp = new Date().toISOString();
-  
-        $.ajax({
-          url: "/api/quiz_answer",
-          method: "POST",
-          contentType: "application/json",
-          data: JSON.stringify({
-            question_id: questionId,
-            selected_id: selectedAnswer.id,
-            timestamp: timestamp,
-          }),
-          success: function (data) {
-            if (data.error) {
-              console.error("Error from server:", data.error);
-              alert(data.error);
-              return;
-            }
-  
-            handleAnswerResponse(data);
-          },
-          error: function (xhr, status, error) {
-            console.error("AJAX Error:", error);
-            console.error("Status:", status);
-            console.error("Response:", xhr.responseText);
-            alert("Failed to submit answer. Please try again.");
-          },
-        });
-      });
-  
-      function handleAnswerResponse(data) {
-        const correctOption = quizData.questions[
-          currentQuestionIndex
-        ].options.find((opt) => opt.correct || opt.isCorrect);
-  
-        previousAnswers[currentQuestionIndex] = {
-          selectedId: selectedAnswer.id,
-          correct: data.correct,
-          correctId: correctOption ? correctOption.id : null,
-          explanation: data.explanation || "",
-        };
-  
-        if (data.correct) {
-          score++;
-          $("#feedbackText").text("Correct!");
-          $("#feedbackShell").removeClass("incorrect").addClass("correct");
-  
-          $(".answer-btn.selected").addClass("correct");
-        } else {
-          $("#feedbackText").text("Incorrect.");
-          $("#feedbackShell").removeClass("correct").addClass("incorrect");
-  
-          $(".answer-btn.selected").addClass("incorrect");
-  
-          if (correctOption) {
-            $("#explanationText").text(
-              "The correct answer is: " + correctOption.text + ". "
-            );
-  
-            $(`.answer-btn[data-id="${correctOption.id}"]`).addClass("correct");
-          }
+
+        $("#feedbackText").text(
+          previousAnswer.correct ? "Correct!" : "Incorrect."
+        );
+        $("#feedbackShell").removeClass("correct incorrect");
+        $("#feedbackShell").addClass(
+          previousAnswer.correct ? "correct" : "incorrect"
+        );
+
+        // Display explanation specific to this question
+        if (previousAnswer.explanation) {
+          $("#explanationText").text(previousAnswer.explanation);
         }
-  
-        if (data.explanation) {
-          const currentText = $("#explanationText").text();
-          $("#explanationText").text(
-            currentText
-              ? currentText + "\n\n" + data.explanation
-              : data.explanation
-          );
-        }
-  
+
         $("#feedbackShell").show();
-        $(".answer-btn").addClass("answered");
         $("#submitAnswer").hide();
-  
+
         if (currentQuestionIndex < quizData.questions.length - 1) {
           $("#nextQuestionBtn").show();
-        } else {
-          setTimeout(function () {
-            showFinalResults();
-          }, 1500);
         }
-      }
-  
-      $("#nextQuestionBtn button").click(function () {
-        currentQuestionIndex++;
-        if (currentQuestionIndex < quizData.questions.length) {
-          showQuestion(currentQuestionIndex);
-        } else {
-          showFinalResults();
-        }
-      });
-  
-      $("#prevQuestionBtn button").click(function () {
-        if (currentQuestionIndex > 0) {
-          currentQuestionIndex--;
-          showQuestion(currentQuestionIndex);
-        }
-      });
-  
-      function showFinalResults() {
-        const scorePct = Math.round((score / quizData.questions.length) * 100);
-        let message = "";
-        if (scorePct >= 90) {
-          message = "Excellent! You've mastered soccer passing concepts!";
-        } else if (scorePct >= 70) {
-          message = "Good job! You have a solid understanding of soccer passing.";
-        } else if (scorePct >= 50) {
-          message = "Not bad, but you might want to review the lessons again.";
-        } else {
-          message = "You should definitely go through the lessons one more time.";
-        }
-  
-        updateProgressBar(quizData.questions.length, quizData.questions.length);
-  
-        // Updated format with more prominent score display
-        $("#finalText").html(`You scored <span style="font-size: 2rem; font-weight: bold; color: #dc3545; display: block; margin: 15px 0;">${scorePct}%</span> — ${message}`);
 
-  
-        $("#questionShell").hide();
-        $("#finalShell").show();
-  
-        $("#backButton").hide();
-        $("#prevQuestionBtn").hide();
-        $("#nextQuestionBtn").hide();
-  
-        $.ajax({
-          url: "/api/quiz_results",
-          method: "GET",
-          success: function (data) {
-            console.log("Quiz results recorded:", data);
-          },
-        });
+        $(".answer-btn").addClass("answered");
       }
+    }
+  }
+
+  function updateProgressBar(current, total) {
+    const percentage = Math.round((current / total) * 100);
+    $("#progressBar").css("width", percentage + "%");
+    $("#progressBar").text(current + " / " + total);
+  }
+
+  $("#submitAnswer").click(function () {
+    if (!selectedAnswer) return;
+
+    const questionId = quizData.questions[currentQuestionIndex].id;
+    const timestamp = new Date().toISOString();
+
+    $.ajax({
+      url: "/api/quiz_answer",
+      method: "POST",
+      contentType: "application/json",
+      data: JSON.stringify({
+        question_id: questionId,
+        selected_id: selectedAnswer.id,
+        timestamp: timestamp,
+      }),
+      success: function (data) {
+        if (data.error) {
+          console.error("Error from server:", data.error);
+          alert(data.error);
+          return;
+        }
+
+        handleAnswerResponse(data);
+      },
+      error: function (xhr, status, error) {
+        console.error("AJAX Error:", error);
+        console.error("Status:", status);
+        console.error("Response:", xhr.responseText);
+        alert("Failed to submit answer. Please try again.");
+      },
     });
+  });
+
+  function handleAnswerResponse(data) {
+    const correctOption = quizData.questions[
+      currentQuestionIndex
+    ].options.find((opt) => opt.correct || opt.isCorrect);
+
+    previousAnswers[currentQuestionIndex] = {
+      selectedId: selectedAnswer.id,
+      correct: data.correct,
+      correctId: correctOption ? correctOption.id : null,
+      explanation: data.explanation || "",
+    };
+
+    if (data.correct) {
+      score++;
+      $("#feedbackText").text("Correct!");
+      $("#feedbackShell").removeClass("incorrect").addClass("correct");
+
+      $(".answer-btn.selected").addClass("correct");
+    } else {
+      $("#feedbackText").text("Incorrect.");
+      $("#feedbackShell").removeClass("correct").addClass("incorrect");
+
+      $(".answer-btn.selected").addClass("incorrect");
+
+      if (correctOption) {
+        // Clear explanation text first
+        $("#explanationText").empty();
+        
+        // Set the correct answer text
+        const correctAnswerText = "The correct answer is: " + correctOption.text + ". ";
+        $("#explanationText").text(correctAnswerText);
+
+        $(`.answer-btn[data-id="${correctOption.id}"]`).addClass("correct");
+      }
+    }
+
+    // Display the explanation provided by the server for this specific question
+    if (data.explanation) {
+      const currentText = $("#explanationText").text();
+      $("#explanationText").text(
+        currentText ? currentText + data.explanation : data.explanation
+      );
+    }
+
+    $("#feedbackShell").show();
+    $(".answer-btn").addClass("answered");
+    $("#submitAnswer").hide();
+
+    if (currentQuestionIndex < quizData.questions.length - 1) {
+      $("#nextQuestionBtn").show();
+    } else {
+      setTimeout(function () {
+        showFinalResults();
+      }, 1500);
+    }
+  }
+
+  $("#nextQuestionBtn button").click(function () {
+    currentQuestionIndex++;
+    if (currentQuestionIndex < quizData.questions.length) {
+      showQuestion(currentQuestionIndex);
+    } else {
+      showFinalResults();
+    }
+  });
+
+  $("#prevQuestionBtn button").click(function () {
+    if (currentQuestionIndex > 0) {
+      currentQuestionIndex--;
+      showQuestion(currentQuestionIndex);
+    }
+  });
+
+  function showFinalResults() {
+    const scorePct = Math.round((score / quizData.questions.length) * 100);
+    let message = "";
+    if (scorePct >= 90) {
+      message = "Excellent! You've mastered soccer passing concepts!";
+    } else if (scorePct >= 70) {
+      message = "Good job! You have a solid understanding of soccer passing.";
+    } else if (scorePct >= 50) {
+      message = "Not bad, but you might want to review the lessons again.";
+    } else {
+      message = "You should definitely go through the lessons one more time.";
+    }
+
+    updateProgressBar(quizData.questions.length, quizData.questions.length);
+
+    // Updated format with more prominent score display
+    $("#finalText").html(`You scored <span style="font-size: 2rem; font-weight: bold; color: #dc3545; display: block; margin: 15px 0;">${scorePct}%</span> — ${message}`);
+
+    $("#questionShell").hide();
+    $("#finalShell").show();
+
+    $("#backButton").hide();
+    $("#prevQuestionBtn").hide();
+    $("#nextQuestionBtn").hide();
+
+    $.ajax({
+      url: "/api/quiz_results",
+      method: "GET",
+      success: function (data) {
+        console.log("Quiz results recorded:", data);
+      },
+    });
+  }
+});
   </script>
   {% endblock %}
