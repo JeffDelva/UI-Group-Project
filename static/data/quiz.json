@@ -1,7 +1,6 @@
 [
   {
     "title": "Soccer Passing Quiz",
-    "description": "Test your knowledge of soccer passing fundamentals.",
     "questions": [
       {
         "id": 1,
@@ -162,7 +161,6 @@
     "results": {
       "ranges": [
         {
-
           "_comment": "Whoever is doing the quiz.html remember to make a counter variable to keep track of the score. Also may need to edit the app.py also to make it work. The just delete this placeholder stuff and output the counter var here.",
 
           "min": 0,

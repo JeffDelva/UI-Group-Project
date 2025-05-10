@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, jsonify, s
 import json
 import random
 import os
+import datetime
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
@@ -11,14 +12,11 @@ with open("static/data/lessons.json", "r") as f:
 
 with open("static/data/quiz.json", "r") as f:
     all_quizzes = json.load(f)
-    QUIZ = all_quizzes[
-        0
-    ]  # Using QUIZ as the variable name to match template references
+    QUIZ = all_quizzes[0]
 
 
 @app.route("/")
 def home():
-    # Reset progress when the home page is loaded via refresh
     if request.method == "GET" and request.referrer is None:
         reset_session()
     return render_template("home.html")
@@ -36,11 +34,9 @@ def lesson(lesson_num):
     if lesson_num < 1 or lesson_num > len(lessons_data):
         return redirect(url_for("home"))
 
-    # Reset progress when navigating directly to a lesson via refresh
     if request.method == "GET" and request.referrer is None:
         reset_session()
 
-    # Track when user enters the page
     session["last_lesson_access"] = {
         "lesson": lesson_num,
         "timestamp": str(datetime.datetime.now()),
@@ -68,7 +64,6 @@ def lesson(lesson_num):
         if question_key.startswith(f"{lesson_num}_"):
             question_text = question_key[len(f"{lesson_num}_") :]
 
-            # Get the user's selected answer
             user_selection = "Unknown"
             if question_key in user_selections:
                 user_selection = "True" if user_selections[question_key] else "False"
@@ -127,7 +122,6 @@ def get_question(lesson_num):
         is_correct = answered_questions[question_key]
         feedback = "Correct!" if is_correct else "Incorrect."
 
-        # Get the user's selection
         if question_key in user_selections:
             user_selection = "true" if user_selections[question_key] else "false"
 
@@ -169,7 +163,6 @@ def check_answer(lesson_num):
     else:
         user_answer = bool(data["user_answer"])
 
-    # Store the user's selection
     user_selections[question_key] = user_answer
     session["user_selections"] = user_selections
     session.modified = True
@@ -260,44 +253,36 @@ def current_lesson():
 
 @app.route("/quiz")
 def quiz_page():
-    # Track when user enters the quiz page
     session["quiz_access_timestamp"] = str(datetime.datetime.now())
-    # Initialize quiz answers if not present
     if "quiz_answers" not in session:
         session["quiz_answers"] = {}
     return render_template("quiz.html", QUIZ=QUIZ)
 
 
-# send the quiz JSON to the front end
 @app.route("/api/quiz_data")
 def quiz_data():
     return jsonify(
         {
             "title": QUIZ["title"],
-            "description": QUIZ["description"],
             "questions": QUIZ["questions"],
         }
     )
 
 
-# accept each answer and store in session
 @app.route("/api/quiz_answer", methods=["POST"])
 def quiz_answer():
     data = request.get_json()
     qid = data.get("question_id")
     selected = data.get("selected_id")
 
-    # find the question
     question = next((q for q in QUIZ["questions"] if q["id"] == qid), None)
     if not question:
         return jsonify({"error": "invalid question_id"}), 400
 
-    # record it
     answers = session.setdefault("quiz_answers", {})
     answers[str(qid)] = selected
     session.modified = True
 
-    # determine correctness
     correct_opts = [o for o in question["options"] if o.get("isCorrect", False)]
     is_correct = any(o["id"] == selected for o in correct_opts)
     correct_text = " / ".join(o["text"] for o in correct_opts)
@@ -312,7 +297,6 @@ def quiz_answer():
     )
 
 
-# compute final score + message
 @app.route("/api/quiz_results")
 def quiz_results():
     answers = session.get("quiz_answers", {})
@@ -328,7 +312,6 @@ def quiz_results():
 
     pct = round(correct / total * 100)
 
-    # Store the quiz results in session
     session["quiz_results"] = {
         "score": correct,
         "total": total,
@@ -337,7 +320,6 @@ def quiz_results():
     }
     session.modified = True
 
-    # pick the right message bucket
     msg = next(
         (
             r["message"]
@@ -350,25 +332,16 @@ def quiz_results():
     return jsonify({"score_pct": pct, "message": msg})
 
 
-# Add this route to your Flask app
-
-
 @app.route("/reset_progress", methods=["POST"])
 def reset_progress():
     """Reset user progress and redirect to lesson 1."""
     try:
-        # Reset session variables
         session["correct_answers"] = 0
-
-        # Reset any answered questions
         if "answers" in session:
             session["answers"] = {}
 
-        # Reset any other progress-related variables
         if "completed_lessons" in session:
             session["completed_lessons"] = []
-
-        # You may need to reset other session variables based on your application
 
         return jsonify({"success": True})
     except Exception as e:
@@ -391,9 +364,6 @@ def reset_session():
     if "quiz_results" in session:
         session.pop("quiz_results")
 
-
-# Add missing import
-import datetime
 
 if __name__ == "__main__":
     app.run(debug=True)
